@@ -1,0 +1,205 @@
+ Para o dataframe Patricia em dias
+lista_selecionada [['Eto', '1'], ['Eto', '2'], ['Tmean', '1'], ['Tmax', '1'], ['Eto', '3'], ['Tmean', '2'], ['Tmean', '3'], ['Eto', '4'], ['Tmean', '4'], ['Tmean', '5']]
+lista ['Tmean', 'Tmax']
+Eto ['Eto']
+lags [[1, 2, 3, 4, 5], [1]]
+lags_eto [1, 2, 3, 4]
+lista_selecionada [['Eto', '1'], ['Eto', '2'], ['I', '1'], ['Eto', '3'], ['Tmax', '1'], ['Eto', '5'], ['Tmean', '2'], ['J', '28'], ['J', '27'], ['Eto', '12']]
+lista ['I', 'Tmax', 'Tmean', 'J']
+Eto ['Eto']
+lags [[1], [1], [2], [28, 27]]
+lags_eto [1, 2, 3, 5, 12]
+lista_Formatada_1 ------->  [['Tmean', 'Tmax'], [[1, 2, 3, 4, 5], [1]], ['Eto'], [1, 2, 3, 4]]
+lista_Formatada_2 ------->  [['I', 'Tmax', 'Tmean', 'J'], [[1], [1], [2], [28, 27]], ['Eto'], [1, 2, 3, 5, 12]]
+
+ -----------Para----1----dias --------
+
+Arvores
+------------------
+Arvore
+std_mse 0.7542
+Erro medio absoluto---- 0.8022
+------------------
+Arvore
+std_mse 0.6923
+Erro medio absoluto---- 0.756
+                 lista                 lista_lags    Eto          lags_eto    rmse
+0        [Tmean, Tmax]     [[1, 2, 3, 4, 5], [1]]  [Eto]      [1, 2, 3, 4]   1.101
+1  [I, Tmax, Tmean, J]  [[1], [1], [2], [28, 27]]  [Eto]  [1, 2, 3, 5, 12]  1.0251
+florestass
+------------------
+floresta
+std_mse 0.5565
+Erro medio absoluto---- 0.6025
+------------------
+floresta
+std_mse 0.5345
+Erro medio absoluto---- 0.5939
+                 lista                 lista_lags    Eto          lags_eto    rmse
+0        [Tmean, Tmax]     [[1, 2, 3, 4, 5], [1]]  [Eto]      [1, 2, 3, 4]  0.8201
+1  [I, Tmax, Tmean, J]  [[1], [1], [2], [28, 27]]  [Eto]  [1, 2, 3, 5, 12]   0.799
+xgbs
+------------------
+xgb
+std_mse 0.6301
+Erro medio absoluto---- 0.6572
+------------------
+xgb
+std_mse 0.572
+Erro medio absoluto---- 0.6031
+                 lista                 lista_lags    Eto          lags_eto    rmse
+0        [Tmean, Tmax]     [[1, 2, 3, 4, 5], [1]]  [Eto]      [1, 2, 3, 4]  0.9105
+1  [I, Tmax, Tmean, J]  [[1], [1], [2], [28, 27]]  [Eto]  [1, 2, 3, 5, 12]  0.8312
+lista_selecionada [['Eto', '3'], ['Tmean', '3'], ['Eto', '4'], ['Tmean', '4'], ['Tmean', '5'], ['Tmean', '6'], ['Eto', '5'], ['Tmean', '7'], ['Tmean', '8'], ['Tmean', '9']]
+lista ['Tmean']
+Eto ['Eto']
+lags [[3, 4, 5, 6, 7, 8, 9]]
+lags_eto [3, 4, 5]
+lista_selecionada [['Eto', '3'], ['Tmean', '4'], ['Eto', '4'], ['Tmean', '3'], ['Tmean', '5'], ['J', '29'], ['Tmean', '10'], ['J', '7'], ['J', '21'], ['Eto', '5']]
+lista ['Tmean', 'J']
+Eto ['Eto']
+lags [[4, 3, 5, 10], [29, 7, 21]]
+lags_eto [3, 4, 5]
+lista_Formatada_1 ------->  [['Tmean'], [[3, 4, 5, 6, 7, 8, 9]], ['Eto'], [3, 4, 5]]
+lista_Formatada_2 ------->  [['Tmean', 'J'], [[4, 3, 5, 10], [29, 7, 21]], ['Eto'], [3, 4, 5]]
+
+ -----------Para----3----dias --------
+
+Arvores
+------------------
+Arvore
+std_mse 0.8766
+Erro medio absoluto---- 0.9772
+------------------
+Arvore
+std_mse 0.8287
+Erro medio absoluto---- 0.8469
+        lista                    lista_lags    Eto   lags_eto    rmse
+0     [Tmean]       [[3, 4, 5, 6, 7, 8, 9]]  [Eto]  [3, 4, 5]  1.3127
+1  [Tmean, J]  [[4, 3, 5, 10], [29, 7, 21]]  [Eto]  [3, 4, 5]  1.1849
+florestass
+------------------
+floresta
+std_mse 0.6018
+Erro medio absoluto---- 0.7365
+------------------
+floresta
+std_mse 0.5697
+Erro medio absoluto---- 0.6741
+        lista                    lista_lags    Eto   lags_eto    rmse
+0     [Tmean]       [[3, 4, 5, 6, 7, 8, 9]]  [Eto]  [3, 4, 5]  0.9511
+1  [Tmean, J]  [[4, 3, 5, 10], [29, 7, 21]]  [Eto]  [3, 4, 5]  0.8826
+xgbs
+------------------
+xgb
+std_mse 0.6614
+Erro medio absoluto---- 0.7792
+------------------
+xgb
+std_mse 0.6376
+Erro medio absoluto---- 0.7178
+        lista                    lista_lags    Eto   lags_eto    rmse
+0     [Tmean]       [[3, 4, 5, 6, 7, 8, 9]]  [Eto]  [3, 4, 5]  1.0221
+1  [Tmean, J]  [[4, 3, 5, 10], [29, 7, 21]]  [Eto]  [3, 4, 5]    0.96
+lista_selecionada [['Tmean', '7'], ['Tmean', '8'], ['Tmean', '9'], ['Tmean', '10'], ['Tmean', '11'], ['Eto', '7'], ['Tmean', '12'], ['Tmin', '7'], ['Eto', '8'], ['Tmin', '8']]
+lista ['Tmean', 'Tmin']
+Eto ['Eto']
+lags [[7, 8, 9, 10, 11, 12], [7, 8]]
+lags_eto [7, 8]
+lista_selecionada [['Tmean', '10'], ['Tmean', '9'], ['Eto', '7'], ['Eto', '8'], ['J', '30'], ['J', '12'], ['J', '10'], ['J', '26'], ['J', '23'], ['Tmean', '12']]
+lista ['Tmean', 'J']
+Eto ['Eto']
+lags [[10, 9, 12], [30, 12, 10, 26, 23]]
+lags_eto [7, 8]
+lista_Formatada_1 ------->  [['Tmean', 'Tmin'], [[7, 8, 9, 10, 11, 12], [7, 8]], ['Eto'], [7, 8]]
+lista_Formatada_2 ------->  [['Tmean', 'J'], [[10, 9, 12], [30, 12, 10, 26, 23]], ['Eto'], [7, 8]]
+
+ -----------Para----7----dias --------
+
+Arvores
+------------------
+Arvore
+std_mse 0.9566
+Erro medio absoluto---- 1.0283
+------------------
+Arvore
+std_mse 0.9103
+Erro medio absoluto---- 0.9563
+           lista                           lista_lags    Eto lags_eto    rmse
+0  [Tmean, Tmin]      [[7, 8, 9, 10, 11, 12], [7, 8]]  [Eto]   [7, 8]  1.4045
+1     [Tmean, J]  [[10, 9, 12], [30, 12, 10, 26, 23]]  [Eto]   [7, 8]  1.3202
+florestass
+------------------
+floresta
+std_mse 0.6126
+Erro medio absoluto---- 0.7814
+------------------
+floresta
+std_mse 0.601
+Erro medio absoluto---- 0.7138
+           lista                           lista_lags    Eto lags_eto    rmse
+0  [Tmean, Tmin]      [[7, 8, 9, 10, 11, 12], [7, 8]]  [Eto]   [7, 8]  0.9929
+1     [Tmean, J]  [[10, 9, 12], [30, 12, 10, 26, 23]]  [Eto]   [7, 8]  0.9332
+xgbs
+------------------
+xgb
+std_mse 0.709
+Erro medio absoluto---- 0.8728
+------------------
+xgb
+std_mse 0.6901
+Erro medio absoluto---- 0.7625
+           lista                           lista_lags    Eto lags_eto    rmse
+0  [Tmean, Tmin]      [[7, 8, 9, 10, 11, 12], [7, 8]]  [Eto]   [7, 8]  1.1245
+1     [Tmean, J]  [[10, 9, 12], [30, 12, 10, 26, 23]]  [Eto]   [7, 8]  1.0285
+lista_selecionada [['Tmean', '10'], ['Tmean', '11'], ['Tmean', '12'], ['Eto', '10'], ['Tmean', '13'], ['Eto', '11'], ['Eto', '12'], ['Tmean', '14'], ['Tmin', '10'], ['Tmin', '11']]
+lista ['Tmean', 'Tmin']
+Eto ['Eto']
+lags [[10, 11, 12, 13, 14], [10, 11]]
+lags_eto [10, 11, 12]
+lista_selecionada [['J', '25'], ['Tmean', '11'], ['J', '28'], ['J', '11'], ['J', '24'], ['J', '22'], ['J', '14'], ['J', '29'], ['J', '17'], ['J', '30']]
+lista ['J', 'Tmean']
+Eto []
+lags [[25, 28, 11, 24, 22, 14, 29, 17, 30], [11]]
+lags_eto []
+lista_Formatada_1 ------->  [['Tmean', 'Tmin'], [[10, 11, 12, 13, 14], [10, 11]], ['Eto'], [10, 11, 12]]
+lista_Formatada_2 ------->  [['J', 'Tmean'], [[25, 28, 11, 24, 22, 14, 29, 17, 30], [11]], [], []]
+
+ -----------Para----10----dias --------
+
+Arvores
+------------------
+Arvore
+std_mse 0.9345
+Erro medio absoluto---- 1.0373
+------------------
+Arvore
+std_mse 0.8554
+Erro medio absoluto---- 0.9291
+           lista                                    lista_lags    Eto      lags_eto    rmse
+0  [Tmean, Tmin]              [[10, 11, 12, 13, 14], [10, 11]]  [Eto]  [10, 11, 12]  1.3962
+1     [J, Tmean]  [[25, 28, 11, 24, 22, 14, 29, 17, 30], [11]]     []            []  1.2629
+florestass
+------------------
+floresta
+std_mse 0.6359
+Erro medio absoluto---- 0.7945
+------------------
+floresta
+std_mse 0.6653
+Erro medio absoluto---- 0.7634
+           lista                                    lista_lags    Eto      lags_eto    rmse
+0  [Tmean, Tmin]              [[10, 11, 12, 13, 14], [10, 11]]  [Eto]  [10, 11, 12]  1.0176
+1     [J, Tmean]  [[25, 28, 11, 24, 22, 14, 29, 17, 30], [11]]     []            []  1.0127
+xgbs
+------------------
+xgb
+std_mse 0.7063
+Erro medio absoluto---- 0.8452
+------------------
+xgb
+std_mse 0.7483
+Erro medio absoluto---- 0.8171
+           lista                                    lista_lags    Eto      lags_eto    rmse
+0  [Tmean, Tmin]              [[10, 11, 12, 13, 14], [10, 11]]  [Eto]  [10, 11, 12]  1.1015
+1     [J, Tmean]  [[25, 28, 11, 24, 22, 14, 29, 17, 30], [11]]     []            []   1.108
