@@ -277,3 +277,14 @@ def timer(start_time=None):
         thour,temp_sec=divmod((datetime.now()-start_time).total_seconds(),3600)
         tmin,tsec=divmod(temp_sec,60)
         #print(thour,":",tmin,':',round(tsec,2))
+
+def evaluate(model, test_features, test_labels):
+    predictions = model.predict(test_features)
+    errors = abs(predictions - test_labels)
+    mape = 100 * np.mean(errors / test_labels)
+    accuracy = 100 - mape
+    print('Model Performance')
+    print('Average Error: {:0.4f} degrees.'.format(np.mean(errors)))
+    print('Accuracy = {:0.2f}%.'.format(accuracy))
+    
+    return accuracy

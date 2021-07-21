@@ -1,0 +1,19 @@
+
+
+arvore(df,lista, lags, Eto, lags_eto,variavel_Alvo):
+
+model = DecisionTreeRegressor(random_state = 42)
+  
+
+
+florestaAleatoria(df,lista, lags, Eto, lags_eto,variavel_Alvo):
+
+model = RandomForestRegressor(n_estimators=1000,random_state = 42 )
+  
+
+
+   
+xgb(df,lista, lags, Eto, lags_eto,variavel_Alvo):
+
+model = XGBRegressor(objective='reg:squarederror', n_estimators=1000,random_state = 42)
+  

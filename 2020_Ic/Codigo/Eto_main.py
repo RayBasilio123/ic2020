@@ -97,7 +97,7 @@ lista2=['Tmax', 'Tmin', 'I', 'Tmean', 'UR', 'V', 'J']
 # lista_Formatada_1 ------->  [['Tmean', 'Tmax'], [[1, 2, 3, 4], [1]], ['Eto'], [1, 2, 3, 4, 5]]
 # lista_Formatada_2 ------->  [['Tmax', 'Tmean', 'I', 'UR', 'J'], [[1], [2], [1], [1], [22, 26]], ['Eto'], [1, 2, 3, 4]]
   
-for x in [1,3,7,10]:
+for x in [10]:
   lista_Filtrada=column_Filter(resultadoP[0],x)
   ranking_data_Patricia = resource_ranking(data_Patricia,lista_Filtrada,"Eto")
   lista_Formatada1=list_Format(ranking_data_Patricia[0],10,0)
@@ -107,15 +107,15 @@ for x in [1,3,7,10]:
   print("lista_Formatada_2 -------> ",lista_Formatada2)
   print('\n -----------Para----' + str(x) + '----dias -------Modelo-\n')
   
-  arvores(data_Patricia,[lista_Formatada1,lista_Formatada2],"Eto")
+  # arvores(data_Patricia,[lista_Formatada1,lista_Formatada2],"Eto")
 #                      lista                      lista_lags    Eto         lags_eto  rmse
 # 0            [Tmean, Tmax]             [[1, 2, 3, 4], [1]]  [Eto]  [1, 2, 3, 4, 5]  1.12
 # 1  [Tmax, Tmean, I, UR, J]  [[1], [2], [1], [1], [22, 26]]  [Eto]     [1, 2, 3, 4]  1.08
   florestasAleatorias(data_Patricia,[lista_Formatada1,lista_Formatada2],"Eto")
-#                        lista                      lista_lags    Eto         lags_eto  rmse
-# 0            [Tmean, Tmax]             [[1, 2, 3, 4], [1]]  [Eto]  [1, 2, 3, 4, 5]  0.82
-# 1  [Tmax, Tmean, I, UR, J]  [[1], [2], [1], [1], [22, 26]]  [Eto]     [1, 2, 3, 4]  0.79
-  xgbs(data_Patricia,[lista_Formatada1,lista_Formatada2],"Eto")
+# #                        lista                      lista_lags    Eto         lags_eto  rmse
+# # 0            [Tmean, Tmax]             [[1, 2, 3, 4], [1]]  [Eto]  [1, 2, 3, 4, 5]  0.82
+# # 1  [Tmax, Tmean, I, UR, J]  [[1], [2], [1], [1], [22, 26]]  [Eto]     [1, 2, 3, 4]  0.79
+  # xgbs(data_Patricia,[lista_Formatada1,lista_Formatada2],"Eto")
 #                      lista                      lista_lags    Eto         lags_eto    rmse
 # 0            [Tmean, Tmax]             [[1, 2, 3, 4], [1]]  [Eto]  [1, 2, 3, 4, 5]  0.88
 # 1  [Tmax, Tmean, I, UR, J]  [[1], [2], [1], [1], [22, 26]]  [Eto]     [1, 2, 3, 4]  0.87

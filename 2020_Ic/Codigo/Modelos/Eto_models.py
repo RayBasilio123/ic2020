@@ -90,8 +90,24 @@ def arvore(df,lista, lags, Eto, lags_eto,variavel_Alvo):
   # print(y1_test,"y1_test")
   # print("*****************asddfg******************")
 
+  # Ajuste manual
   model = DecisionTreeRegressor(random_state = 42)
-  model.fit(x1_train, y1_train)
+  
+  # Ajuste por grid
+  # model = DecisionTreeRegressor(random_state=42,max_depth= 5, max_features='log2', max_leaf_nodes= 10, min_samples_leaf=1, min_weight_fraction_leaf= 0.1, splitter='best')
+ # 1 Dia
+  # model = DecisionTreeRegressor(random_state=42,max_depth= 5, max_features='auto', max_leaf_nodes= None, min_samples_leaf=1, min_weight_fraction_leaf= 0.1, splitter='best')
+  # model = DecisionTreeRegressor(random_state=42,max_depth= 5, max_features='auto', max_leaf_nodes= None, min_samples_leaf=1, min_weight_fraction_leaf= 0.1, splitter='best')
+  # 3 Dias
+  # model = DecisionTreeRegressor(random_state=42,max_depth= 5, max_features='auto', max_leaf_nodes= None, min_samples_leaf=1, min_weight_fraction_leaf= 0.1, splitter='best')
+  # model = DecisionTreeRegressor(random_state=42,max_depth= 5, max_features='auto', max_leaf_nodes= None, min_samples_leaf=1, min_weight_fraction_leaf= 0.1, splitter='best')
+  #7 Dias
+  # model = DecisionTreeRegressor(random_state=42,max_depth= 5, max_features='auto', max_leaf_nodes= 10, min_samples_leaf=1, min_weight_fraction_leaf= 0.1, splitter='best')
+  # model = DecisionTreeRegressor(random_state=42,max_depth= 5, max_features='log2', max_leaf_nodes= 10, min_samples_leaf=1, min_weight_fraction_leaf= 0.1, splitter='best')
+  #10 Dias
+  # model = DecisionTreeRegressor(random_state=42,max_depth= 5, max_features='auto', max_leaf_nodes= None, min_samples_leaf=1, min_weight_fraction_leaf= 0.1, splitter='best')
+  model = DecisionTreeRegressor(random_state=42,max_depth= 5, max_features='log2', max_leaf_nodes= 10, min_samples_leaf=1, min_weight_fraction_leaf= 0.1, splitter='best')
+  model.fit(x1_train, y1_train)                 
   print("------------------")
   print("Arvore")
   y1_pred = model.predict(x1_test)
@@ -126,7 +142,7 @@ def arvores(df,arvore_parametros,variavel_Alvo):
 
   return tb
 
-def train_test(df, lista,lags,Eto,lags_eto,variavel_Alvo,data_Itest= '2012-01-01',data_Ftest= '2012-12-31',data_Itreino='1993-01-01',data_Ftreino='2011-12-31'):
+def train_test(df, lista,lags,Eto,lags_eto,variavel_Alvo,data_Itest= '2013-01-01',data_Ftest= '2013-12-31',data_Itreino='1993-01-01',data_Ftreino='2011-12-31'):
   tabela = get_x2(df, lista,lags,Eto,lags_eto)
   selecao_treino = (tabela[0]['Data'] >= data_Itreino) & (tabela[0]['Data'] <= data_Ftreino)
   selecao_teste = (tabela[0]['Data'] >= data_Itest) & (tabela[0]['Data'] <= data_Ftest)
@@ -157,6 +173,7 @@ def train_test(df, lista,lags,Eto,lags_eto,variavel_Alvo,data_Itest= '2012-01-01
 
 
 def florestaAleatoria(df,lista, lags, Eto, lags_eto,variavel_Alvo):
+  x1_train, x1_test,y1_train, y1_test = train_test(df, lista,lags,Eto,lags_eto,variavel_Alvo)
   # tabela = get_x2(df, lista,lags,Eto,lags_eto)
   
   # #Quando era em porcentagem eu usava assim :
@@ -177,9 +194,26 @@ def florestaAleatoria(df,lista, lags, Eto, lags_eto,variavel_Alvo):
   # x1_train, x1_test = x1_train[tabela[1]:], x1_test
   # y1_train, y1_test = y1_train[tabela[1]:], y1_test
 
-  x1_train, x1_test,y1_train, y1_test = train_test(df, lista,lags,Eto,lags_eto,variavel_Alvo)
+ 
 
-  model = RandomForestRegressor(n_estimators=1000,random_state = 42 )
+  # Ajuste manual
+  # model = RandomForestRegressor(n_estimators=1000,random_state = 42 )
+
+  # Ajuste por grid
+
+ # 1 Dia
+  # model = RandomForestRegressor(random_state = 42 ,bootstrap=True, max_depth= 8, max_features= 5, min_samples_leaf= 4, min_samples_split= 8, n_estimators=1000)
+  # model = RandomForestRegressor(random_state = 42 ,bootstrap=True, max_depth= 11, max_features= 2, min_samples_leaf= 5, min_samples_split= 12, n_estimators=1000)
+  # 3 Dias
+  # model = RandomForestRegressor(random_state = 42 ,bootstrap=True, max_depth= 8, max_features= 4, min_samples_leaf= 5, min_samples_split= 8, n_estimators=1000)
+  # model = RandomForestRegressor(random_state = 42 ,bootstrap=True, max_depth= 5, max_features= 3, min_samples_leaf= 4, min_samples_split= 8, n_estimators=100)
+  #7 Dias
+  # model = RandomForestRegressor(random_state = 42 ,bootstrap=True, max_depth= 8, max_features= 3, min_samples_leaf= 4, min_samples_split= 8, n_estimators=100)
+  # model = RandomForestRegressor(random_state = 42 ,bootstrap=True, max_depth= 5, max_features= 3, min_samples_leaf= 5, min_samples_split= 12, n_estimators=100)
+  #10 Dias
+  # model = RandomForestRegressor(random_state = 42 ,bootstrap=True, max_depth= 8, max_features= 5, min_samples_leaf= 3, min_samples_split= 10, n_estimators=500)
+  model = RandomForestRegressor(random_state = 42 ,bootstrap=True, max_depth= 5, max_features= 2, min_samples_leaf= 5, min_samples_split= 8, n_estimators=100)
+
   model.fit(x1_train, y1_train)
   print("------------------")
   print("floresta")
@@ -221,8 +255,9 @@ def florestasAleatorias(df,arvore_parametros,variavel_Alvo):
   
 
 def xgb(df,lista, lags, Eto, lags_eto,variavel_Alvo):
-  tabela = get_x2(df, lista,lags,Eto,lags_eto)
   
+  x1_train, x1_test,y1_train, y1_test = train_test(df, lista,lags,Eto,lags_eto,variavel_Alvo)
+  # tabela = get_x2(df, lista,lags,Eto,lags_eto)
   # x1 = tabela[0].drop("Data", axis=1)
   # y1 = df[variavel_Alvo]
   
@@ -230,18 +265,38 @@ def xgb(df,lista, lags, Eto, lags_eto,variavel_Alvo):
   # x1_train, x1_test = x1[tabela[1]:train_size], x1[train_size:int(len(x1))]
   # y1_train, y1_test = y1[tabela[1]:train_size], y1[train_size:int(len(y1))]
 
-  selecao_treino = (tabela[0]['Data'] >= '1993') & (tabela[0]['Data'] <= '2011-12-31')
-  selecao_teste = (tabela[0]['Data'] >= '2012-01-01') & (tabela[0]['Data'] <= '2012-12-31')
+  # selecao_treino = (tabela[0]['Data'] >= '1993') & (tabela[0]['Data'] <= '2011-12-31')
+  # selecao_teste = (tabela[0]['Data'] >= '2013-01-01') & (tabela[0]['Data'] <= '2013-12-31')
 
-  x1_train = tabela[0][selecao_treino].drop("Data", axis=1)
-  x1_test = tabela[0][selecao_teste].drop("Data", axis=1)
+  # x1_train = tabela[0][selecao_treino].drop("Data", axis=1)
+  # x1_test = tabela[0][selecao_teste].drop("Data", axis=1)
   
-  y1_train = df[variavel_Alvo][selecao_treino]
-  y1_test = df[variavel_Alvo][selecao_teste]
-  x1_train, x1_test = x1_train[tabela[1]:], x1_test
-  y1_train, y1_test = y1_train[tabela[1]:], y1_test
+  # y1_train = df[variavel_Alvo][selecao_treino]
+  # y1_test = df[variavel_Alvo][selecao_teste]
+  # x1_train, x1_test = x1_train[tabela[1]:], x1_test
+  # y1_train, y1_test = y1_train[tabela[1]:], y1_test
+  # Padrão 
+  # model = XGBRegressor(random_state = 42)
+  # Ajuste manual
+  # model = XGBRegressor(objective='reg:squarederror', n_estimators=1000,random_state = 42)
 
-  model = XGBRegressor(objective='reg:squarederror', n_estimators=1000,random_state = 42)
+  # Ajuste por grid
+  
+  # 1 Dia
+  # model = XGBRegressor( random_state = 42,colsample_bytree= 1, gamma= 1.5, learning_rate= 0.07, max_depth= 3, min_child_weight= 5, subsample= 0.8)
+  # model = XGBRegressor( random_state = 42,colsample_bytree= 0.6, gamma= 5, learning_rate= 0.07, max_depth= 4, min_child_weight= 1, subsample= 0.8)
+  
+  # 3 Dias
+  # model = XGBRegressor( random_state = 42,colsample_bytree= 1, gamma= 0.5, learning_rate= 0.05, max_depth= 3, min_child_weight= 5, subsample= 0.8)
+  # model = XGBRegressor( random_state = 42,colsample_bytree= 0.6, gamma= 5, learning_rate= 0.05, max_depth= 3, min_child_weight= 5, subsample= 0.6)
+  
+  #7 Dias
+  # model = XGBRegressor( random_state = 42,colsample_bytree= 1, gamma= 5, learning_rate= 0.07, max_depth= 4, min_child_weight= 1, subsample= 1)
+  # model = XGBRegressor( random_state = 42,colsample_bytree= 0.6, gamma= 5, learning_rate= 0.05, max_depth= 3, min_child_weight= 5, subsample= 0.6)
+  
+  #10 Dias
+  # model = XGBRegressor( random_state = 42,colsample_bytree= 0.6, gamma= 1, learning_rate= 0.05, max_depth= 4, min_child_weight= 10, subsample= 0.8)
+  model = XGBRegressor( random_state = 42,colsample_bytree= 1, gamma= 5, learning_rate= 0.05, max_depth= 3, min_child_weight= 1, subsample= 1)
   model.fit(x1_train, y1_train)
   print("------------------")
   print("xgb")
