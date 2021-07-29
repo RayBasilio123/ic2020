@@ -75,6 +75,35 @@ def run_sarimaDay(series, steps_ahead, config_ordem, config_sazonal):
 
   return result
 
+def run_sarimaxDay(series,exog,steps_ahead,config_ordem,config_sazonal):
+  result = []
+  
+  #Lista de data+hora que será previsto
+  begin = series.index.max() + timedelta(days=0)
+  date_list = [begin + timedelta(days=x) for x in range(1,steps_ahead+1)]
+  
+  #Valores da série
+  values = series.values
+  
+  #Valores da variável exogena
+  ex = exog.values
+
+  #Valores da variável exogena que será prevista
+  ex_cast = ex.reshape(-1, 1)[-steps_ahead:]
+  
+  #ARIMA
+  mod = sm.tsa.statespace.SARIMAX(values, exog=ex, order=config_ordem, seasonal_order=config_sazonal)
+  res = mod.fit(disp=False)
+  forecast = res.forecast(steps=steps_ahead, exog=ex_cast)
+
+  #Resultado no formato para ser exibido no gráfico
+  for i in range(steps_ahead):
+    if forecast[i] < 0: 
+      result.append([date_list[i].strftime('%d/%m/%Y %H:%M:%S'),0])
+    else:
+      result.append([date_list[i].strftime('%d/%m/%Y %H:%M:%S'),round((forecast[i]),3)])
+
+  return result
 
 def arvore(df,lista, lags, Eto, lags_eto,variavel_Alvo):
   
@@ -106,7 +135,7 @@ def arvore(df,lista, lags, Eto, lags_eto,variavel_Alvo):
   # model = DecisionTreeRegressor(random_state=42,max_depth= 5, max_features='log2', max_leaf_nodes= 10, min_samples_leaf=1, min_weight_fraction_leaf= 0.1, splitter='best')
   #10 Dias
   # model = DecisionTreeRegressor(random_state=42,max_depth= 5, max_features='auto', max_leaf_nodes= None, min_samples_leaf=1, min_weight_fraction_leaf= 0.1, splitter='best')
-  model = DecisionTreeRegressor(random_state=42,max_depth= 5, max_features='log2', max_leaf_nodes= 10, min_samples_leaf=1, min_weight_fraction_leaf= 0.1, splitter='best')
+  # model = DecisionTreeRegressor(random_state=42,max_depth= 5, max_features='log2', max_leaf_nodes= 10, min_samples_leaf=1, min_weight_fraction_leaf= 0.1, splitter='best')
   model.fit(x1_train, y1_train)                 
   print("------------------")
   print("Arvore")
@@ -123,7 +152,7 @@ def arvore(df,lista, lags, Eto, lags_eto,variavel_Alvo):
   # pyplot.legend(bbox_to_anchor=(0,1.02,1,0.2), loc="lower left",
   #               mode="expand", borderaxespad=0, ncol=3)
   # pyplot.show()
-  return lista,lags,Eto,lags_eto,round(rmse,2)
+  return lista,lags,Eto,lags_eto,round(rmse,2),"DecisionTreeRegressor"
 
 def arvores(df,arvore_parametros,variavel_Alvo):
   lista_colunas=["lista","lista_lags","Eto","lags_eto","rmse"]
@@ -131,7 +160,8 @@ def arvores(df,arvore_parametros,variavel_Alvo):
   print("Arvores")
   for x in range(len(arvore_parametros)):
     a=arvore(df,arvore_parametros[x][0],arvore_parametros[x][1],arvore_parametros[x][2],arvore_parametros[x][3],variavel_Alvo)
- 
+    
+    tb.loc[x,'model']=a[5]
     tb.loc[x,'lista']=a[0]
     tb.loc[x,'lista_lags']=a[1]
     tb.loc[x,'Eto']=a[2]
@@ -152,6 +182,7 @@ def train_test(df, lista,lags,Eto,lags_eto,variavel_Alvo,data_Itest= '2013-01-01
   
   y1_train = df[variavel_Alvo][selecao_treino]
   y1_test = df[variavel_Alvo][selecao_teste]
+  
 
   x1_train = x1_train[tabela[1]:]
   y1_train = y1_train[tabela[1]:]
@@ -169,7 +200,8 @@ def train_test(df, lista,lags,Eto,lags_eto,variavel_Alvo,data_Itest= '2013-01-01
   print("*****************asddfg******************")
  
            
-  return x1_train, x1_test,y1_train, y1_test
+  return x1_train.values, x1_test.values,y1_train, y1_test
+  
 
 
 def florestaAleatoria(df,lista, lags, Eto, lags_eto,variavel_Alvo):
@@ -202,7 +234,7 @@ def florestaAleatoria(df,lista, lags, Eto, lags_eto,variavel_Alvo):
   # Ajuste por grid
 
  # 1 Dia
-  # model = RandomForestRegressor(random_state = 42 ,bootstrap=True, max_depth= 8, max_features= 5, min_samples_leaf= 4, min_samples_split= 8, n_estimators=1000)
+  model = RandomForestRegressor(random_state = 42 ,bootstrap=True, max_depth= 8, max_features= 5, min_samples_leaf= 4, min_samples_split= 8, n_estimators=1000)
   # model = RandomForestRegressor(random_state = 42 ,bootstrap=True, max_depth= 11, max_features= 2, min_samples_leaf= 5, min_samples_split= 12, n_estimators=1000)
   # 3 Dias
   # model = RandomForestRegressor(random_state = 42 ,bootstrap=True, max_depth= 8, max_features= 4, min_samples_leaf= 5, min_samples_split= 8, n_estimators=1000)
@@ -224,13 +256,13 @@ def florestaAleatoria(df,lista, lags, Eto, lags_eto,variavel_Alvo):
   print("std_mse",round(std_mse,2))
   rmse = math.sqrt(mse)
   print("Erro medio absoluto----",round(mean_absolute_error(y1_test, y1_pred),2))
-  # pyplot.plot(np.arange(y1_test.shape[0]),y1_test, label='Expected Random forests ')
-  # pyplot.plot(y1_pred, label='Predicted Random forests')
-  # pyplot.legend(bbox_to_anchor=(0,1.02,1,0.2), loc="lower left",
-  #               mode="expand", borderaxespad=0, ncol=3)
-  # pyplot.show()
+  pyplot.plot(np.arange(y1_test.shape[0]),y1_test, label='Expected Random forests ')
+  pyplot.plot(y1_pred, label='Predicted Random forests')
+  pyplot.legend(bbox_to_anchor=(0,1.02,1,0.2), loc="lower left",
+                mode="expand", borderaxespad=0, ncol=3)
+  pyplot.show()
     
-  return lista,lags,Eto,lags_eto,round(rmse,2),
+  return lista,lags,Eto,lags_eto,round(rmse,2),"RandomForestRegressor"
 
 def florestasAleatorias(df,arvore_parametros,variavel_Alvo):
   lista_colunas=["lista","lista_lags","Eto","lags_eto","rmse"]
@@ -238,7 +270,8 @@ def florestasAleatorias(df,arvore_parametros,variavel_Alvo):
   print("florestass")
   for x in range(len(arvore_parametros)):
     a=florestaAleatoria(df,arvore_parametros[x][0],arvore_parametros[x][1],arvore_parametros[x][2],arvore_parametros[x][3],variavel_Alvo)
- 
+    
+    tb.loc[x,'model']=a[5]
     tb.loc[x,'lista']=a[0]
     tb.loc[x,'lista_lags']=a[1]
     tb.loc[x,'Eto']=a[2]
@@ -313,19 +346,20 @@ def xgb(df,lista, lags, Eto, lags_eto,variavel_Alvo):
   #               mode="expand", borderaxespad=0, ncol=3)
   # pyplot.show()
     
-  return lista,lags,Eto,lags_eto,round(rmse,2)
+  return lista,lags,Eto,lags_eto,round(rmse,2),"XGBRegressor"
 
 def xgbs(df,arvore_parametros,variavel_Alvo):
-  lista_colunas=["lista","lista_lags","Eto","lags_eto","rmse"]
+  lista_colunas=["lista","lista_lags",variavel_Alvo,"lags_Target","rmse"]
   tb = pd.DataFrame(columns=lista_colunas)
   print("xgbs")
   for x in range(len(arvore_parametros)):
     a=xgb(df,arvore_parametros[x][0],arvore_parametros[x][1],arvore_parametros[x][2],arvore_parametros[x][3],variavel_Alvo)
- 
+    
+    tb.loc[x,'model']=a[5]
     tb.loc[x,'lista']=a[0]
     tb.loc[x,'lista_lags']=a[1]
-    tb.loc[x,'Eto']=a[2]
-    tb.loc[x,'lags_eto']=a[3]
+    tb.loc[x,variavel_Alvo]=a[2]
+    tb.loc[x,'lags_Target']=a[3]
     tb.loc[x,"rmse"]=a[4]
 
   print(tb)

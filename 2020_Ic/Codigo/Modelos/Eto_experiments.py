@@ -210,12 +210,6 @@ def resource_ranking(df,lista_filtrada3,variavel_alvo) :
   # print("Colunas_selecionadas [1]- Importância do recurso",leg_seq2)
   return leg_seq,leg_seq2
 
-
-
-
-
-
-
 def list_Format(melhores_recursos,q,dias):
   b=[]
   lags=[]
